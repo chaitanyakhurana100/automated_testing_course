@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "89c38d6e-cfda-40db-8af1-334694fff507",
+		"name": "Test (PyCharm)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Step1: Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "699e05e8-34b4-4bb0-9a50-17a7b89f8fca",
+						"exec": [
+							"postman.clearEnvironmentVariable(\"access_token\")",
+							"",
+							"tests[\"Response time is less than 200ms\"] = responseTime<200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"User created successfully.\"] = jsonData.message === 'User created successfully.'",
+							"",
+							"tests[\"Content-Type is present in response\"] = postman.getResponseHeader('Content-Type');",
+							"tests[\"Content-Type is 'application/json'\"] = postman.getResponseHeader('Content-Type') === \"application/json\";"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"test10\",\n\t\"password\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step2: Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1ef351ff-599d-49b8-9610-f75aa3428f4e",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Body contains access_token\"] = responseBody.has(\"access_token\");",
+							"tests[\"Response time is less than 150ms\"] = responseTime < 150;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"test10\",\n\t\"password\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/auth",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
