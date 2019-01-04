@@ -41,7 +41,7 @@ class ItemTest(BaseTest):
         with self.app() as client:
             with self.app_context():
                 StoreModel('test').save_to_db()
-                ItemModel('test', 19.99, 1).save_to_db()
+                ItemModel('test', 19.99, 1)
 
                 response = client.delete('/item/test')
                 self.assertEqual(response.status_code, 200)
